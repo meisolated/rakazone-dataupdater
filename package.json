@@ -17,7 +17,7 @@
  "main": "index.js",
  "type": "module",
  "scripts": {
-  "start": "pm2 start api.js --name rakazone_backend_api && pm2 start scheduledTasks.js --name rakazone_backend_api_scheduledTask --env production",
+  "start": "pm2 start scheduledTasks.js --name rakazone_backend_api_scheduledTask",
   "test": "echo \"Error: no test specified\" && exit 1"
  },
  "keywords": [],
