@@ -10,7 +10,7 @@ export const UpdateVideosList = (video, api_key) =>
             let final_data = other.data.items[0]
             let final_duration = moment.duration(final_data.contentDetails.duration).asSeconds()
             let type =
-                final_duration <= 60
+                final_duration <= 120
                     ? "shorts"
                     : final_duration <= 300
                         ? "montage"
@@ -45,6 +45,7 @@ export const UpdateVideoType = () =>
             x++
             let final_duration = video.duration
             let title = video.title.toLowerCase()
+            let title_array = title.split(" ")
             let type =
                 final_duration <= 120
                     ? "shorts"
@@ -66,7 +67,8 @@ export const UpdateVideoType = () =>
                                 ? "series"
                                 : title.includes("shorts")
                                     ? "shorts"
-                                    : type
+                                    : title_array.includes("irl") ? "irl" : type
+            console.log("Updated " + x + " videos")
             await Videos.update({ type: type }, { where: { videoId: video.videoId } })
         })
         resolve()
