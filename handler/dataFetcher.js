@@ -155,7 +155,7 @@ export const getLocoLiveData = (loco_channel_url) =>
                         title: title,
                         platform: "loco",
                         videoId: "RakaZone_Gaming",
-                        publishedAt: Date.now(),
+                        publishedAt: Math.floor(Date.now() / 1000),
                         link: loco_channel_url,
                         thumbnail: default_thumbnail(),
                         viewers_count: viewers_count.split(" ")[0] || 0,

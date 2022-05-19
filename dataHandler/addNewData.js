@@ -10,8 +10,13 @@ import moment from "moment"
 export let addNewVideos = () =>
     new Promise(async (resolve, reject) => {
         let youtubeApiKey = await YoutubeAPI.findOne({ where: { utilization: { [Op.lt]: 9000 } } })
-        let userData = await StreamerData.findOne({ where: { id: 1 } })
-        let videosList = await getYoutubeVidoesList(userData.yt_channel_id, youtubeApiKey.key)
+        let streamerData = await StreamerData.findAll()
+        let _streamerData_ = {}
+        streamerData = streamerData.forEach(streamerData => {
+            let _streamerData = streamerData.dataValues
+            _streamerData_[_streamerData.name] = _streamerData.data
+        })
+        let videosList = await getYoutubeVidoesList(_streamerData_.yt_channel_id, youtubeApiKey.key)
 
         await Promise.all(
             videosList.items.map(async (video) => {   //get video Stats
