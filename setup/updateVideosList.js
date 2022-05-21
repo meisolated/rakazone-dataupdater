@@ -2,6 +2,8 @@ import axios from "axios"
 import { youtube_channel_video_statistics } from "../functions/apiTemplates.js"
 import { Videos } from "../models/Videos.model.js"
 import moment from "moment"
+import { sleep, UrlExists } from "../functions/funtions.js"
+import { youtube_channel_video_thumbnail_maxresdefault } from "../functions/urlTemplates.js"
 export const UpdateVideosList = (video, api_key) =>
     new Promise((resolve, reject) => {
         //get other video stats
@@ -19,10 +21,12 @@ export const UpdateVideosList = (video, api_key) =>
                             : final_duration > 3600 && final_duration <= 1200
                                 ? "series"
                                 : "live_stream"
+            let thumbnail = await UrlExists(youtube_channel_video_thumbnail_maxresdefault(video.id.videoId)) ? youtube_channel_video_thumbnail_maxresdefault(video.id.videoId) : `https://raka.zone/assets/img/thumbnail_not_found.png`
             let video_data = {}
             video_data["videoId"] = video.id.videoId
             video_data["title"] = video.snippet.title
             video_data["type"] = type
+            video_data["thumbnail"] = thumbnail
             video_data["publishedAt"] = video.snippet.publishedAt
             video_data["duration"] = final_data.contentDetails.duration
             video_data["viewCount"] = convertToInternationalCurrencySystem(final_data.statistics.viewCount)
@@ -37,7 +41,7 @@ export const UpdateVideosList = (video, api_key) =>
         })
     })
 
-export const UpdateVideoType = () =>
+export const UpdateVideoData = () =>
     new Promise(async (resolve, reject) => {
         let allVideosList = await Videos.findAll()
         let x = 0
@@ -69,7 +73,9 @@ export const UpdateVideoType = () =>
                                     ? "shorts"
                                     : title_array.includes("irl") ? "irl" : type
             console.log("Updated " + x + " videos")
-            await Videos.update({ type: type }, { where: { videoId: video.videoId } })
+            let thumbnail = await UrlExists(youtube_channel_video_thumbnail_maxresdefault(video.videoId)) ? youtube_channel_video_thumbnail_maxresdefault(video.videoId) : `https://raka.zone/assets/img/thumbnail_not_found.png`
+            await sleep(100)
+            await Videos.update({ type: type, thumbnail }, { where: { videoId: video.videoId } })
         })
         resolve()
     })

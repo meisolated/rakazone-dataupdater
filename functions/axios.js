@@ -16,4 +16,7 @@ const axios_simple_get = (url) =>
             .catch((err) => reject(throwError(err)))
     })
 
+
+    
+
 export { axios_simple_get }

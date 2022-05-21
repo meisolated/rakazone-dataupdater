@@ -1,3 +1,3 @@
-import { UpdateVideoType } from "./setup/updateVideosList.js"
+import { UpdateVideoData } from "./setup/updateVideosList.js"
 
-await UpdateVideoType()
+await UpdateVideoData()

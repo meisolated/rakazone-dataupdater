@@ -6,6 +6,7 @@
   "lodash": "^4.17.21",
   "moment": "^2.29.1",
   "mysql2": "^2.3.3",
+  "node-fetch": "^3.2.4",
   "node-schedule": "^2.1.0",
   "request": "^2.88.2",
   "request-promise": "^4.2.6",

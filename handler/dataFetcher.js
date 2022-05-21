@@ -73,7 +73,6 @@ export const getYoutubeLiveData = (channelId, apiKey) =>
         await getYoutubeVidoesList(channelId, apiKey)
             .then(async (videos_list) => {
                 let isLive = videos_list.items.filter((videos) => (videos.snippet.liveBroadcastContent === "live" || videos.snippet.liveBroadcastContent === "upcoming") && videos.id.kind === "youtube#video")
-
                 if (isLive.length > 0) {
                     let viewers = await getYoutubeCurrentViewers(isLive[0].id.videoId, apiKey)
                         .then((data) => data.items[0].liveStreamingDetails.concurrentViewers)
@@ -87,7 +86,7 @@ export const getYoutubeLiveData = (channelId, apiKey) =>
                         publishedAt,
                         thumbnail: youtube_channel_video_thumbnail_maxresdefault(isLive[0].id.videoId),
                         viewers_count: viewers,
-                        status: "live",
+                        status: isLive[0].snippet.liveBroadcastContent,
                         last_update: Date.now(),
                     }
                     return resolve(data)
