@@ -11,7 +11,8 @@
   "request": "^2.88.2",
   "request-promise": "^4.2.6",
   "sequelize": "^6.19.0",
-  "winston": "^3.7.2"
+  "winston": "^3.7.2",
+  "ytdl-core": "^4.11.0"
  },
  "name": "rakazone_backend_api",
  "version": "1.0.0",

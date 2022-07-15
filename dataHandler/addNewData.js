@@ -5,6 +5,8 @@ import { Videos } from "../models/Videos.model.js"
 import { getVideoStatistics, getYoutubeVidoesList } from "../handler/dataFetcher.js"
 import LoggerUtil from "../util/logger.js"
 import moment from "moment"
+import { UrlExists } from "../functions/funtions.js"
+import { youtube_channel_video_thumbnail_maxresdefault } from "../functions/urlTemplates.js"
 
 
 export let addNewVideos = () =>
@@ -39,12 +41,14 @@ export let addNewVideos = () =>
                 type = (video.snippet.title.toLowerCase().includes("vlog") || video.snippet.title.toLowerCase().includes("vlogging")) ? "vlog" : type
                 let checkVideoInDB = await Videos.findOne({ where: { videoId: video.id.videoId } })
                 if (checkVideoInDB === null) {
+                    let thumbnail = await UrlExists(youtube_channel_video_thumbnail_maxresdefault(video.id.videoId)) ? youtube_channel_video_thumbnail_maxresdefault(video.id.videoId) : `https://raka.zone/assets/img/thumbnail_not_found.png`
                     LoggerUtil.info("Video " + video.snippet.title + " is not in DB - Adding")
                     return await Videos.create({
                         platform: "youtube",
                         videoId: video.id.videoId,
                         title: video.snippet.title,
                         type: type,
+                        thumbnail: thumbnail,
                         publishedAt: publishedAt,
                         duration: final_duration,
                         viewCount: videoStats.statistics.viewCount,
