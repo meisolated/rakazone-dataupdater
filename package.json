@@ -1,30 +1,30 @@
 {
- "dependencies": {
-  "axios": "^0.26.1",
-  "cheerio": "^1.0.0-rc.10",
-  "dotenv": "^16.0.0",
-  "express": "^4.18.1",
-  "lodash": "^4.17.21",
-  "moment": "^2.29.1",
-  "mysql2": "^2.3.3",
-  "node-fetch": "^3.2.4",
-  "node-schedule": "^2.1.0",
-  "request": "^2.88.2",
-  "request-promise": "^4.2.6",
-  "sequelize": "^6.19.0",
-  "winston": "^3.7.2",
-  "ytdl-core": "^4.11.0"
- },
- "name": "rakazone_backend_api",
- "version": "1.0.0",
- "main": "index.js",
- "type": "module",
- "scripts": {
-  "start": "pm2 start scheduledTasks.js --name rakazone_backend_api_scheduledTask",
-  "test": "echo \"Error: no test specified\" && exit 1"
- },
- "keywords": [],
- "author": "",
- "license": "ISC",
- "description": ""
+    "dependencies": {
+        "axios": "^0.26.1",
+        "cheerio": "^1.0.0-rc.10",
+        "dotenv": "^16.0.0",
+        "express": "^4.18.1",
+        "lodash": "^4.17.21",
+        "moment": "^2.29.1",
+        "mysql2": "^2.3.3",
+        "node-fetch": "^3.2.4",
+        "node-schedule": "^2.1.0",
+        "request": "^2.88.2",
+        "request-promise": "^4.2.6",
+        "sequelize": "^6.19.0",
+        "winston": "^3.7.2",
+        "ytdl-core": "^4.11.0"
+    },
+    "name": "rakazone_backend_api",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "start": "pm2 start scheduledTasks.js --name rakazone_backend_api_scheduledTask",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "description": ""
 }
