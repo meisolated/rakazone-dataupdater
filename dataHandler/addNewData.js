@@ -1,12 +1,12 @@
-import { Op } from "sequelize"
-import { YoutubeAPI } from "../models/YoutubeAPI.model.js"
-import { StreamerData } from "../models/StreamerData.model.js"
-import { Videos } from "../models/Videos.model.js"
-import { getVideoStatistics, getYoutubeVidoesList } from "../handler/dataFetcher.js"
-import LoggerUtil from "../util/logger.js"
 import moment from "moment"
+import { Op } from "sequelize"
 import { UrlExists } from "../functions/funtions.js"
 import { youtube_channel_video_thumbnail_maxresdefault } from "../functions/urlTemplates.js"
+import { getVideoStatistics, getYoutubeVidoesList } from "../handler/dataFetcher.js"
+import { StreamerData } from "../models/StreamerData.model.js"
+import { Videos } from "../models/Videos.model.js"
+import { YoutubeAPI } from "../models/YoutubeAPI.model.js"
+import LoggerUtil from "../util/logger.js"
 
 
 export let addNewVideos = () =>

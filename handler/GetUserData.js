@@ -1,7 +1,6 @@
-import { loco_channel } from "../functions/urlTemplates.js"
-import { getYoutubeChannelStatistics, getLocoData, getInstagramData } from "./dataFetcher.js"
 import { convertToInternationalCurrencySystem } from "../functions/funtions.js"
-import _ from "lodash"
+import { loco_channel } from "../functions/urlTemplates.js"
+import { getInstagramData, getLocoData, getYoutubeChannelStatistics } from "./dataFetcher.js"
 
 /**
  *

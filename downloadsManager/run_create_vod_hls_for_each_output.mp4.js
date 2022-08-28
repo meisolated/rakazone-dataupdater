@@ -1,10 +1,10 @@
-import fs from "fs"
 import cp from "child_process"
+import fs from "fs"
 // list folders
-const folders = fs.readdirSync("./src/downloads/output/")
+const folders = fs.readdirSync("../downloads/output/")
 
 folders.map((folder, index) => {
-   const hlsPath = "./src/downloads/output/" + folder + "/HLS"
+   const hlsPath = "../downloads/output/" + folder + "/HLS"
    const HLSFolder = fs.readdirSync(hlsPath)
    if (!HLSFolder.includes("playlist.m3u8")) {
       const start = Date.now()
@@ -16,7 +16,7 @@ folders.map((folder, index) => {
             }
          })
       } catch (error) {
-         console.log("Error creating HLS " + folder)
+         console.log("Error creating HLS " + folder + error)
       }
       const end = Date.now()
       console.log(`Generating HLS for ${folder} took ${end - start}ms -- ${index + 1}/${folders.length}`)

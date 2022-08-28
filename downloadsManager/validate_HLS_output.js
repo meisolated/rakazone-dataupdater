@@ -1,11 +1,9 @@
-import fs from "fs"
 import cp from "child_process"
+import fs from "fs"
 import { Videos } from "../models/Videos.model.js"
-// list folders
-const folders = fs.readdirSync("./downloads/output/")
-
+const folders = fs.readdirSync("../downloads/output/")
 folders.map(async (folder, index) => {
-    const hlsPath = "./downloads/output/" + folder + "/HLS"
+    const hlsPath = "../downloads/output/" + folder + "/HLS"
     const HLSFolder = fs.readdirSync(hlsPath)
     if (!HLSFolder.includes("playlist.m3u8")) {
         console.log(folder + " invalid")
@@ -21,7 +19,4 @@ folders.map(async (folder, index) => {
             console.log(folder + " not found")
         }
     }
-    // HLSFolder.map((files, index) => {
-
-    // })
 })
