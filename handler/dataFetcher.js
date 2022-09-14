@@ -1,11 +1,11 @@
+import { load } from "cheerio"
+import _ from "lodash"
+import requestPromise from "request-promise"
 import { instagram_user_data, youtube_channel_live_stream_viewers_count, youtube_channel_statistics, youtube_channel_video_list, youtube_channel_video_statistics } from "../functions/apiTemplates.js"
 import { axios_simple_get } from "../functions/axios.js"
 import { throwError } from "../functions/funtions.js"
-import requestPromise from "request-promise"
-import { load } from "cheerio"
-import { youtube_watch_video, youtube_channel_video_thumbnail_maxresdefault, default_thumbnail } from "../functions/urlTemplates.js"
+import { default_thumbnail, youtube_channel_video_thumbnail_maxresdefault, youtube_watch_video } from "../functions/urlTemplates.js"
 import { YoutubeAPI } from "../models/YoutubeAPI.model.js"
-
 //? YOUTUBE
 /**
  *
@@ -79,7 +79,7 @@ export const getYoutubeLiveData = (channelId, apiKey) =>
                         .catch((err) => throwError(err))
                     let publishedAt = Math.floor(new Date(isLive[0].snippet.publishedAt).getTime() / 1000)
                     let data = {
-                        title: isLive[0].snippet.title,
+                        title: _.unescape(isLive[0].snippet.title),
                         platform: "youtube",
                         videoId: isLive[0].id.videoId,
                         link: youtube_watch_video(isLive[0].id.videoId),

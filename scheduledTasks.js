@@ -1,8 +1,8 @@
 import schedule from "node-schedule"
-import { updateUserData, updateLiveData, updateVideoStats } from "./dataHandler/updater.js"
 import { addNewVideos } from "./dataHandler/addNewData.js"
-import LoggerUtil from "./util/logger.js"
+import { updateLiveData, updateUserData, updateVideoStats } from "./dataHandler/updater.js"
 import { YoutubeAPI } from "./models/YoutubeAPI.model.js"
+import LoggerUtil from "./util/logger.js"
 LoggerUtil.info("Starting Scheduled Tasks")
 
 schedule.scheduleJob("0 */1 * * * *", async function () {
@@ -18,7 +18,7 @@ schedule.scheduleJob("0 0 */23 * * *", async function () { //0 0 */23 * * *
 
 // schedule every 12:30 PM
 schedule.scheduleJob("* 30 12 * * *", async function () {
-    LoggerUtil.error("resetting api useage to 0")
+    LoggerUtil.error("resetting api usage to 0")
     let apis = await YoutubeAPI.findAll()
     await Promise.all(
         apis.map(async (api) => {

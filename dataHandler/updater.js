@@ -1,15 +1,14 @@
 import { Op } from "sequelize"
+import { isEmptyObject, sleep } from "../functions/funtions.js"
+import { getVideoStatistics, getYoutubeCurrentViewers } from "../handler/dataFetcher.js"
+import { CheckLoco, CheckYoutube } from "../handler/GetLiveStatus.js"
+import { GetLocoUserData, GetYoutubeUserData } from "../handler/GetUserData.js"
 import { Live } from "../models/Live.model.js"
-import { YoutubeAPI } from "../models/YoutubeAPI.model.js"
 import { Settings } from "../models/Settings.model.js"
 import { StreamerData } from "../models/StreamerData.model.js"
 import { Videos } from "../models/Videos.model.js"
-
-import { getVideoStatistics, getYoutubeCurrentViewers } from "../handler/dataFetcher.js"
-import { CheckYoutube, CheckLoco } from "../handler/GetLiveStatus.js"
+import { YoutubeAPI } from "../models/YoutubeAPI.model.js"
 import LoggerUtil from "../util/logger.js"
-import { isEmptyObject, sleep } from "../functions/funtions.js"
-import { GetLocoUserData, GetYoutubeUserData } from "../handler/GetUserData.js"
 
 
 
@@ -46,7 +45,7 @@ export let updateLiveData = () =>
                 return resolve({ success: true })
             }
         } else if (currentliveData.last_update + settings.check_in < currentTime && currentliveData.status === "offline") {
-            LoggerUtil.info("Currenly Offline - Checking if live")
+            LoggerUtil.info("Currently Offline - Checking if live")
             let youtubeLiveStatus = await CheckYoutube(youtubeApiKey.key, _data.yt_channel_id)
             let locoLiveStatus = await CheckLoco(_data.loco_username)
             let updateLiveStatus = youtubeLiveStatus.status === "live" ? youtubeLiveStatus : locoLiveStatus.status === "live" ? locoLiveStatus : { last_update: currentTime }
@@ -71,9 +70,9 @@ export let updateUserData = () =>
         })
         //update user data here
         let getLocoUserData = await GetLocoUserData(_data.loco_username)
-        let getYoutubUserData = await GetYoutubeUserData(_data.yt_channel_id, youtubeApiKey.key)
+        let getYoutubeUserData = await GetYoutubeUserData(_data.yt_channel_id, youtubeApiKey.key)
         // let finalData = Object.assign(getLocoUserData, getYoutubUserData)
-        let finalData = getLocoUserData.concat(getYoutubUserData)
+        let finalData = getLocoUserData.concat(getYoutubeUserData)
 
         finalData.forEach(async (data) => {
             let where = Object.keys(data)[0]
