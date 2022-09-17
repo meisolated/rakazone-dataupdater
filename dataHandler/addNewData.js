@@ -13,8 +13,7 @@ export let addNewVideos = () =>
         let streamerData = await StreamerData.find()
         let _streamerData_ = {}
         streamerData = streamerData.forEach(streamerData => {
-            let _streamerData = streamerData.dataValues
-            _streamerData_[_streamerData.name] = _streamerData.data
+            _streamerData_[streamerData.key] = streamerData.value
         })
         let videosList = await getYoutubeVidoesList(_streamerData_.yt_channel_id, youtubeApiKey)
 

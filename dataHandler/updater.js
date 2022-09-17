@@ -32,11 +32,13 @@ export let updateLiveData = () =>
                     ? { status: false }
                     : { viewersCount: currentViewers.items[0].liveStreamingDetails.concurrentViewers, lastUpdate: currentTime }
                 await Live.findOneAndUpdate({ platform: "youtube", updateLiveStatus })
+                console.log("Currently ", updateLiveStatus)
                 return resolve({ success: true })
             } else if (currentLiveData.platform === "loco") {
                 let currentViewers = await CheckLoco(_data.loco_username)
                 let updateLiveStatus = currentViewers.status === false ? { status: false } : { viewersCount: currentViewers.viewersCount }
                 await Live.findOneAndUpdate({ platform: "youtube" }, updateLiveStatus)
+                console.log("Currently ", updateLiveStatus)
                 return resolve({ success: true })
             }
         } else if (currentLiveData.lastUpdate + settings.check_in < currentTime && currentLiveData.status === false) {
@@ -45,6 +47,7 @@ export let updateLiveData = () =>
             let locoLiveStatus = await CheckLoco(_data.loco_username)
             let updateLiveStatus = youtubeLiveStatus.status === true ? youtubeLiveStatus : locoLiveStatus.status === true ? locoLiveStatus : { lastUpdate: currentTime }
             await Live.findOneAndUpdate({ platform: "youtube" }, updateLiveStatus)
+            console.log("Currently ", updateLiveStatus)
             return resolve({ success: true })
         } else {
             LoggerUtil.info("Live data is up to date")

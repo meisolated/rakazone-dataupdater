@@ -6,6 +6,7 @@ import { YoutubeAPI } from "./models/index.js"
 import LoggerUtil from "./util/logger.js"
 LoggerUtil.info("Starting Scheduled Tasks")
 
+
 schedule.scheduleJob("0 */1 * * * *", async function () {
     await updateLiveData()
 })
