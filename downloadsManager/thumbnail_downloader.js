@@ -46,7 +46,6 @@ videosList.map(async (video, index) => {
 
     const request = https.request(`https://i.ytimg.com/vi/${video.videoId}/hq720.jpg`, function (response) {
         var data = new Transform()
-
         response.on("data", function (chunk) {
             data.push(chunk)
         })
@@ -55,7 +54,6 @@ videosList.map(async (video, index) => {
             console.log(video.videoId + " " + "hq720" + " downloaded")
         })
     })
-
     request.end()
     request.on("error", (e) => {
         console.log(e)
