@@ -7,16 +7,16 @@ import { throwError } from "./funtions.js"
  * @returns response of said URL
  */
 const axios_simple_get = (url) =>
-    new Promise((reslove, reject) => {
+    new Promise((resolve, reject) => {
         axios
             .get(url)
             .then(async ({ data }) => {
-                return reslove(data)
+                return resolve(data)
             })
-            .catch((err) => reject(throwError(err)))
+            .catch((err) => resolve(err))
     })
 
 
-    
+
 
 export { axios_simple_get }

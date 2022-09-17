@@ -14,21 +14,21 @@ import { updateAPIUsage } from "../helpers/youtubeAPI.js"
  * @returns
  */
 export const getYoutubeVidoesList = (channelId, apiKey) =>
-    new Promise(async (reslove, reject) => {
+    new Promise(async (resolve, reject) => {
         await updateAPIUsage(100, apiKey)
         return axios_simple_get(youtube_channel_video_list(channelId, apiKey))
-            .then((data) => reslove(data))
-            .catch((err) => reject(err))
+            .then((data) => resolve(data))
+            .catch((err) => resolve(err))
     })
 
 export const getVideoStatistics = (videoId, apiKey) =>
-    new Promise(async (reslove, reject) => {
+    new Promise(async (resolve, reject) => {
         await updateAPIUsage(1, apiKey)
         axios_simple_get(youtube_channel_video_statistics(videoId, apiKey))
             .then(async (other) => {
-                reslove(other)
+                resolve(other)
             })
-            .catch((err) => reject(err))
+            .catch((err) => resolve(err))
     })
 
 /**
@@ -42,7 +42,7 @@ export const getYoutubeChannelStatistics = (channelId, apiKey) =>
         await updateAPIUsage(1, apiKey)
         return axios_simple_get(youtube_channel_statistics(channelId, apiKey))
             .then((data) => resolve(data.items[0].statistics))
-            .catch((err) => reject(throwError(err)))
+            .catch((err) => resolve(err))
     })
 /**
  *
@@ -59,7 +59,7 @@ export const getYoutubeCurrentViewers = (video_id, apiKey) =>
             .then((data) => {
                 resolve(data)
             })
-            .catch((err) => reject(throwError(err)))
+            .catch((err) => resolve(err))
     })
 
 /**
@@ -76,7 +76,7 @@ export const getYoutubeLiveData = (channelId, apiKey) =>
                 if (isLive.length > 0) {
                     let viewers = await getYoutubeCurrentViewers(isLive[0].id.videoId, apiKey)
                         .then((data) => data.items[0].liveStreamingDetails.concurrentViewers)
-                        .catch((err) => throwError(err))
+                        .catch((err) => resolve(err))
                     let publishedAt = Math.floor(new Date(isLive[0].snippet.publishedAt).getTime() / 1000)
                     let data = {
                         title: _.unescape(isLive[0].snippet.title),
@@ -94,8 +94,11 @@ export const getYoutubeLiveData = (channelId, apiKey) =>
                     return resolve({ status: false })
                 }
             })
-            .catch((err) => {
-                return resolve({ status: true })
+            .catch(async (err) => {
+                if (err.data?.error?.message?.includes("exceeded")) {
+                    await updateAPIUsage(9000, apiKey)
+                }
+                return resolve({ status: false })
             })
     })
 
@@ -110,7 +113,7 @@ export const getInstagramData = (username) =>
         console.log(instagram_user_data(username))
         return axios_simple_get(instagram_user_data(username))
             .then((data) => resolve(data))
-            .catch((err) => reject(throwError(err)))
+            .catch((err) => resolve(err))
     })
 
 //? LOCO
@@ -130,7 +133,7 @@ export const getLocoData = (loco_channel_url) =>
 
                 return resolve([{ loco_views_count }, { loco_followers_count }])
             })
-            .catch((err) => reject(throwError(err)))
+            .catch((err) => resolve(err))
     })
 
 /**
