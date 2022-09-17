@@ -1,9 +1,10 @@
 import axios from "axios"
-import { youtube_channel_video_statistics } from "../functions/apiTemplates.js"
-import { Videos } from "../models/Videos.model.js"
 import moment from "moment"
+import { youtube_channel_video_statistics } from "../functions/apiTemplates.js"
 import { sleep, UrlExists } from "../functions/funtions.js"
 import { youtube_channel_video_thumbnail_maxresdefault } from "../functions/urlTemplates.js"
+import { Videos } from "../models/index.js"
+
 export const UpdateVideosList = (video, api_key) =>
     new Promise((resolve, reject) => {
         //get other video stats
@@ -75,7 +76,7 @@ export const UpdateVideoData = () =>
             console.log("Updated " + x + " videos")
             let thumbnail = await UrlExists(youtube_channel_video_thumbnail_maxresdefault(video.videoId)) ? youtube_channel_video_thumbnail_maxresdefault(video.videoId) : `https://raka.zone/assets/img/thumbnail_not_found.png`
             await sleep(100)
-            await Videos.update({ type: type, thumbnail }, { where: { videoId: video.videoId } })
+            await Videos.updateOne({ type: type, thumbnail }, { where: { videoId: video.videoId } })
         })
         resolve()
     })

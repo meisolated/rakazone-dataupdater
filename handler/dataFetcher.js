@@ -5,7 +5,7 @@ import { instagram_user_data, youtube_channel_live_stream_viewers_count, youtube
 import { axios_simple_get } from "../functions/axios.js"
 import { throwError } from "../functions/funtions.js"
 import { default_thumbnail, youtube_channel_video_thumbnail_maxresdefault, youtube_watch_video } from "../functions/urlTemplates.js"
-import { YoutubeAPI } from "../models/YoutubeAPI.model.js"
+import { updateAPIUsage } from "../helpers/youtubeAPI.js"
 //? YOUTUBE
 /**
  *
@@ -15,7 +15,7 @@ import { YoutubeAPI } from "../models/YoutubeAPI.model.js"
  */
 export const getYoutubeVidoesList = (channelId, apiKey) =>
     new Promise(async (reslove, reject) => {
-        await YoutubeAPI.increment({ utilization: 100 }, { where: { key: apiKey } })
+        await updateAPIUsage(100, apiKey)
         return axios_simple_get(youtube_channel_video_list(channelId, apiKey))
             .then((data) => reslove(data))
             .catch((err) => reject(err))
@@ -23,7 +23,7 @@ export const getYoutubeVidoesList = (channelId, apiKey) =>
 
 export const getVideoStatistics = (videoId, apiKey) =>
     new Promise(async (reslove, reject) => {
-        await YoutubeAPI.increment({ utilization: 1 }, { where: { key: apiKey } })
+        await updateAPIUsage(1, apiKey)
         axios_simple_get(youtube_channel_video_statistics(videoId, apiKey))
             .then(async (other) => {
                 reslove(other)
@@ -39,7 +39,7 @@ export const getVideoStatistics = (videoId, apiKey) =>
  */
 export const getYoutubeChannelStatistics = (channelId, apiKey) =>
     new Promise(async (resolve, reject) => {
-        await YoutubeAPI.increment({ utilization: 1 }, { where: { key: apiKey } })
+        await updateAPIUsage(1, apiKey)
         return axios_simple_get(youtube_channel_statistics(channelId, apiKey))
             .then((data) => resolve(data.items[0].statistics))
             .catch((err) => reject(throwError(err)))
@@ -52,7 +52,7 @@ export const getYoutubeChannelStatistics = (channelId, apiKey) =>
  */
 export const getYoutubeCurrentViewers = (video_id, apiKey) =>
     new Promise(async (resolve, reject) => {
-        await YoutubeAPI.increment({ utilization: 1 }, { where: { key: apiKey } })
+        await updateAPIUsage(1, apiKey)
         let url = youtube_channel_live_stream_viewers_count(video_id, apiKey)
         // data.items[0].liveStreamingDetails.concurrentViewers
         axios_simple_get(url)
@@ -86,16 +86,16 @@ export const getYoutubeLiveData = (channelId, apiKey) =>
                         publishedAt,
                         thumbnail: youtube_channel_video_thumbnail_maxresdefault(isLive[0].id.videoId),
                         viewers_count: viewers,
-                        status: isLive[0].snippet.liveBroadcastContent,
+                        status: true,
                         last_update: Date.now(),
                     }
                     return resolve(data)
                 } else {
-                    return resolve({ status: "offline" })
+                    return resolve({ status: false })
                 }
             })
             .catch((err) => {
-                return resolve({ status: "offline" })
+                return resolve({ status: true })
             })
     })
 
@@ -158,15 +158,15 @@ export const getLocoLiveData = (loco_channel_url) =>
                         link: loco_channel_url,
                         thumbnail: default_thumbnail(),
                         viewers_count: viewers_count.split(" ")[0] || 0,
-                        status: "live",
+                        status: true,
                         last_update: Date.now(),
                     }
                     return resolve(data)
                 } else {
-                    return resolve({ status: "offline" })
+                    return resolve({ status: false })
                 }
             })
-            .catch((err) => resolve({ status: "offline" }))
+            .catch((err) => resolve({ status: false }))
     })
 
 //? TWITTER

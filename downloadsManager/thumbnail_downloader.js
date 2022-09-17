@@ -1,7 +1,6 @@
 import fs from "fs"
 import https from "https"
 import { Transform } from "stream"
-
 import { Videos } from "../models/Videos.model.js"
 
 const videosList = await Videos.findAll({ raw: true })

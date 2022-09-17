@@ -1,20 +1,19 @@
 import axios from "axios"
-import { Videos } from "../models/Videos.model.js"
-import { YoutubeAPI } from "../models/YoutubeAPI.model.js"
+import moment from "moment"
 import { youtube_channel_video_statistics } from "../functions/apiTemplates.js"
 import { sleep, throwError } from "../functions/funtions.js"
-import moment from "moment"
-import { Op } from "sequelize"
+import { getUseableAPIKey, updateAPIUsage } from "../helpers/youtubeAPI.js"
+import { Videos } from "../models/index.js"
 
 
 
 let first = 0
 let videos_count = 0
 async function get_videos(pageToken) {
-    let youtubeApiKey = await YoutubeAPI.findOne({ where: { utilization: { [Op.lt]: 9000 } } })
+    let youtubeApiKey = await getUseableAPIKey()
     if (first === 1 && pageToken == undefined) return
     first = 1
-    let q = `https://www.googleapis.com/youtube/v3/search?key=${youtubeApiKey.key}&channelId=UCRj_BU95SebaRi2FziXEoTg&part=snippet,id&order=date&maxResults=50`
+    let q = `https://www.googleapis.com/youtube/v3/search?key=${youtubeApiKey}&channelId=UCRj_BU95SebaRi2FziXEoTg&part=snippet,id&order=date&maxResults=50`
     let request = pageToken ? q + `&pageToken=${pageToken}` : q
 
     //get all videos
@@ -27,9 +26,9 @@ async function get_videos(pageToken) {
                 videos.map(async (video) => {
                     //now for each video get that video other detials
                     axios
-                        .get(youtube_channel_video_statistics(video.id.videoId, youtubeApiKey.key))
+                        .get(youtube_channel_video_statistics(video.id.videoId, youtubeApiKey))
                         .then(async (other) => {
-                            await YoutubeAPI.increment({ utilization: 1 }, { where: { key: youtubeApiKey.key } })
+                            await updateAPIUsage(1, youtubeApiKey)
                             let final_data = other.data.items[0]
                             if (!final_data.contentDetails) {
                                 console.log(other)
@@ -51,13 +50,16 @@ async function get_videos(pageToken) {
                             type = (video.snippet.title.toLowerCase().includes("vlog") || video.snippet.title.toLowerCase().includes("vlogging")) ? "vlog" : type
                             await Videos.create({
                                 videoId: video.id.videoId,
+                                platform: "youtube",
                                 title: video.snippet.title,
                                 type: type,
                                 publishedAt: publishedAt,
                                 duration: final_duration,
+                                localViews: 0,
                                 viewCount: final_data.statistics.viewCount,
                                 likeCount: final_data.statistics.likeCount,
                                 commentCount: final_data.statistics.commentCount,
+                                status: true
 
                             }).then(() => videos_count++)
                         })
@@ -66,7 +68,7 @@ async function get_videos(pageToken) {
             )
             console.log("Added " + videos_count + " videos")
             await sleep(5000)
-            await YoutubeAPI.increment({ utilization: 100 }, { where: { key: youtubeApiKey.key } })
+            await updateAPIUsage(100, youtubeApiKey)
             return get_videos(data.data.nextPageToken)
         })
         .catch((err) => throwError(err + " videos list error"))

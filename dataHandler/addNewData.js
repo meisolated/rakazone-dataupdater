@@ -1,29 +1,27 @@
 import moment from "moment"
-import { Op } from "sequelize"
 import { UrlExists } from "../functions/funtions.js"
 import { youtube_channel_video_thumbnail_maxresdefault } from "../functions/urlTemplates.js"
 import { getVideoStatistics, getYoutubeVidoesList } from "../handler/dataFetcher.js"
-import { StreamerData } from "../models/StreamerData.model.js"
-import { Videos } from "../models/Videos.model.js"
-import { YoutubeAPI } from "../models/YoutubeAPI.model.js"
+import { getUseableAPIKey } from "../helpers/youtubeAPI.js"
+import { StreamerData, Videos } from "../models/index.js"
 import LoggerUtil from "../util/logger.js"
 
 
 export let addNewVideos = () =>
     new Promise(async (resolve, reject) => {
-        let youtubeApiKey = await YoutubeAPI.findOne({ where: { utilization: { [Op.lt]: 9000 } } })
-        let streamerData = await StreamerData.findAll()
+        let youtubeApiKey = await getUseableAPIKey()
+        let streamerData = await StreamerData.find()
         let _streamerData_ = {}
         streamerData = streamerData.forEach(streamerData => {
             let _streamerData = streamerData.dataValues
             _streamerData_[_streamerData.name] = _streamerData.data
         })
-        let videosList = await getYoutubeVidoesList(_streamerData_.yt_channel_id, youtubeApiKey.key)
+        let videosList = await getYoutubeVidoesList(_streamerData_.yt_channel_id, youtubeApiKey)
 
         await Promise.all(
             videosList.items.map(async (video) => {   //get video Stats
                 if (video.snippet.liveBroadcastContent === "live" || video.snippet.liveBroadcastContent === "upcoming") return
-                let videoStats = await getVideoStatistics(video.id.videoId, youtubeApiKey.key).then(res => res.items[0])
+                let videoStats = await getVideoStatistics(video.id.videoId, youtubeApiKey).then(res => res.items[0])
                 let final_duration = moment.duration(videoStats.contentDetails.duration).asSeconds()
                 let publishedAt = Math.floor(new Date(video.snippet.publishedAt).getTime() / 1000)
 
@@ -39,7 +37,7 @@ export let addNewVideos = () =>
                                     : "live_stream"
 
                 type = (video.snippet.title.toLowerCase().includes("vlog") || video.snippet.title.toLowerCase().includes("vlogging")) ? "vlog" : type
-                let checkVideoInDB = await Videos.findOne({ where: { videoId: video.id.videoId } })
+                let checkVideoInDB = await Videos.findOne({ videoId: video.id.videoId })
                 if (checkVideoInDB === null) {
                     let thumbnail = await UrlExists(youtube_channel_video_thumbnail_maxresdefault(video.id.videoId)) ? youtube_channel_video_thumbnail_maxresdefault(video.id.videoId) : `https://raka.zone/assets/img/thumbnail_not_found.png`
                     LoggerUtil.info("Video " + video.snippet.title + " is not in DB - Adding")
