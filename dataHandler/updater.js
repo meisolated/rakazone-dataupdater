@@ -15,7 +15,7 @@ export let updateLiveData = () =>
         let currentTime = Date.now()
         let currentLiveData = await Live.find().then(d => d[0])
         let youtubeApiKey = await getUseableAPIKey()
-        let settings = { check_in_if_live: 60 * 2 * 100, check_in: 60 * 1000 }
+        let settings = { check_in_if_live: 60000, check_in: 420000 }
 
 
         let streamerData = await StreamerData.find()
