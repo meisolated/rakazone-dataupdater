@@ -8,4 +8,4 @@ export default new Schema({
     publishedAt: { type: Number, required: true },
     status: { type: Boolean, required: true },
     lastUpdate: { type: Number, required: true },
-})
+}, { timestamps: true })
