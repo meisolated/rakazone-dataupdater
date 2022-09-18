@@ -6,7 +6,8 @@ let url_prefix = "https://www.googleapis.com/youtube/v3/"
  * @returns {"kind", "etag", "pageInfo": { "totalResults" "resultsPerPage" },"items": [{"kind" "etag" "id" "statistics": { "viewCount" "subscriberCount" "hiddenSubscriberCount" "videoCount"}}]
 }
  */
-export const youtube_channel_statistics = (channel_id: string, api_key: string) => `${url_prefix}channels?part=statistics&id=${channel_id}&key=${api_key}`
+export const youtube_channel_statistics = (channel_id: string, api_key: string) =>
+    `${url_prefix}channels?part=statistics&id=${channel_id}&key=${api_key}`
 
 /**
  *
@@ -14,7 +15,8 @@ export const youtube_channel_statistics = (channel_id: string, api_key: string) 
  * @param {String} api_key
  * @returns Url of api
  */
-export const youtube_channel_video_list = (channel_id: string, api_key: string) => `${url_prefix}search?key=${api_key}&channelId=${channel_id}&part=snippet,id&order=date&maxResults=50`
+export const youtube_channel_video_list = (channel_id: string, api_key: string) =>
+    `${url_prefix}search?key=${api_key}&channelId=${channel_id}&part=snippet,id&order=date&maxResults=50`
 
 /**
  *
@@ -31,7 +33,8 @@ export const youtube_channel_live_stream_viewers_count = (video_id: string, api_
  * @param {String} api_key
  * @returns Url of api
  */
-export const youtube_channel_playlist_list = (channel_id: string, api_key: string) => `${url_prefix}playlists?channelId=${channel_id}&maxResults=50&key=${api_key}`
+export const youtube_channel_playlist_list = (channel_id: string, api_key: string) =>
+    `${url_prefix}playlists?channelId=${channel_id}&maxResults=50&key=${api_key}`
 
 /**
  *
@@ -39,7 +42,8 @@ export const youtube_channel_playlist_list = (channel_id: string, api_key: strin
  * @param {Strgin} api_key
  * @returns Url of api
  */
-export const youtube_channel_playlist_list_videos = (playlist_id: string, api_key: string) => `${url_prefix}playlistItems?part=snippet%2CcontentDetails&maxResults=50&playlistId=${playlist_id}&key=${api_key}`
+export const youtube_channel_playlist_list_videos = (playlist_id: string, api_key: string) =>
+    `${url_prefix}playlistItems?part=snippet%2CcontentDetails&maxResults=50&playlistId=${playlist_id}&key=${api_key}`
 
 /**
  *
@@ -47,7 +51,8 @@ export const youtube_channel_playlist_list_videos = (playlist_id: string, api_ke
  * @param {String} api_key
  * @returns Url of api
  */
-export const youtube_channel_video_statistics = (video_id: string, api_key: string) => `${url_prefix}videos?part=statistics,contentDetails&id=${video_id}&key=${api_key}`
+export const youtube_channel_video_statistics = (video_id: string, api_key: string) =>
+    `${url_prefix}videos?part=statistics,contentDetails&id=${video_id}&key=${api_key}`
 
 /**
  *
