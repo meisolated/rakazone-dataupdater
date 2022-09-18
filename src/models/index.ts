@@ -4,6 +4,7 @@ import Mongoose from "./mongoose"
 import popupModel from "./popups.model"
 import redirectsModel from "./redirects.model"
 import serverSettingsModel from "./serverSettings.model"
+import serverTaskQueue from "./serverTaskQueue"
 import sessionModel from "./sessions.model"
 import streamerDataModel from "./streamerData.model"
 import usersModel from "./users.model"
@@ -26,4 +27,6 @@ export const Analytics = connection.model("Analytics", analyticsModel)
 export const WatchHistory = connection.model("WatchHistory", watchHistoryModel)
 export const WatchLog = connection.model("WatchLog", watchLogModel)
 export const YoutubeAPI = connection.model("YoutubeAPI", youtubeapiModel)
+export const ServerTaskQueue = connection.model("ServerTaskQueue", serverTaskQueue)
+
 connection.collection("videos").createIndex({ title: "text" })

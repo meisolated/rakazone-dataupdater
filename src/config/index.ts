@@ -2,6 +2,7 @@ interface config {
     HLSDir: string
     thumbnailsDir: string
     assetsDir: string
+    PORT: number
 }
 
 export default <config>{
@@ -9,4 +10,5 @@ export default <config>{
     HLSDir: "/home/isolated/rakazone/downloads/output/HLS",
     thumbnailsDir: "/home/isolated/rakazone/downloads/thumbnails",
     assetsDir: "/home/isolated/rakazone/downloads/assets",
+    PORT: process.env.BUILD_TYPE == "production" ? 3005 : 5005,
 }
