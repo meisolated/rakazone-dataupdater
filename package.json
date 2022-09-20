@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
     "format": "prettier --write \"{src,test}/**/*.{js,ts}\"",
     "prettier": "prettier",
     "install:clean": "rm -r node_modules && rm yarn.lock && yarn"

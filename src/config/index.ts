@@ -1,4 +1,5 @@
 interface config {
+    mongoUri: string
     HLSDir: string
     thumbnailsDir: string
     assetsDir: string
