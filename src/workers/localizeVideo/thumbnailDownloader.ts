@@ -1,7 +1,7 @@
 import fs from "fs"
 import https from "https"
 import Transform from "stream"
-import logger from "util/logger"
+import logger from "../../util/logger"
 
 const baseUrl1 = (videoId: string) => `https://i.ytimg.com/vi/${videoId}/hq720.jpg`
 const baseUrl2 = "https://img.youtube.com/vi/"
@@ -13,19 +13,17 @@ export const downloadThumbnail = (videoId: string, outDir: string) =>
         const request1 = https.request(baseUrl1(videoId), (response) => {
             if (response.statusCode == 404) return
             availableThumbs.push("hq720")
-            let data = new Transform()
+            var data = new Transform()
             response.on("data", (chunk) => {
-                // @ts-ignore
                 data.push(chunk)
             })
             response.on("end", () => {
-                // @ts-ignore
                 fs.writeFileSync(`${outDir}${videoId}-hq720.jpg`, data.read())
             })
         })
         request1.end()
         request1.on("error", (e) => {
-            logger.info(`Error while trying to download ${videoId} thumbnail | hq720.jpg `)
+            logger.info(`Error while trying to download ${videoId} thumbnail | hq720.jpg`)
         })
         Promise.all(
             baseUrl2ThumbnailTypes.map((type) => {
@@ -52,3 +50,5 @@ export const downloadThumbnail = (videoId: string, outDir: string) =>
 
         resolve({ status: "downloaded", availableThumbs })
     })
+
+
