@@ -1,6 +1,6 @@
 import { Schema } from "mongoose"
 
-interface serverSettings {
+interface serverTasksQueue {
     type: string
     state: string
     once: boolean
@@ -12,7 +12,7 @@ interface serverSettings {
     attempts: number
 }
 
-export default new Schema<serverSettings>({
+export default new Schema<serverTasksQueue>({
     type: { type: String, required: true },
     state: { type: String, require: true },
     once: { type: Boolean, required: true },
