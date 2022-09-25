@@ -6,7 +6,10 @@
  * get Facebook Data
  */
 
-export const getInstagramData = () => new Promise((resolve, reject) => {})
+export const getInstagramData = () =>
+    new Promise((resolve, reject) => {
+        resolve({ status: "done" })
+    })
 
 export const getLocoData = () => new Promise((resolve, reject) => {})
 

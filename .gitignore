@@ -3,3 +3,4 @@ dist
 old
 outDir
 log
+src/config/index.ts

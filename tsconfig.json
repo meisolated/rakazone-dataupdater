@@ -1,16 +1,16 @@
 {
     "compilerOptions": {
+        "types": ["mocha", "node"],
         "target": "ES2016",
         "allowSyntheticDefaultImports": true,
         "module": "CommonJS",
         "esModuleInterop": true,
         "baseUrl": "./src",
         "outDir": "./dist",
-        "types": ["node"],
         "moduleResolution": "node",
         "forceConsistentCasingInFileNames": true,
         "strict": true
     },
-    "include": ["src"],
+    "include": ["src", "__test__"],
     "exclude": ["dist", "node_modules"]
 }
