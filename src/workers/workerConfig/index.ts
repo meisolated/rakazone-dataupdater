@@ -1,4 +1,6 @@
-interface workerConfig {}
+interface workerConfig {
+    locoChannelUrl: "https://loco.gg/streamers/RakaZone_Gaming?type=live"
+}
 
 /**
  *

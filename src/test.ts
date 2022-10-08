@@ -1,30 +1,56 @@
-import { convertToHLS, generatePreviewImages, mergeAudioAndVideo, YtdlDownloader } from "./workers/localizeVideo/videoProcessor"
+import {
+    getChannelStatistics,
+    getLocoData,
+    getLocoLiveData,
+    getVideoStatistics,
+    getYoutubeChannelVideosList,
+    getYoutubeLiveData
+} from "./workers/helpers"
+const channelId = "UCRj_BU95SebaRi2FziXEoTg"
+const apiKey = "AIzaSyCSGU0pi0oRrS_uI8JURwBQHTMcDJj9ZZs"
+const videoId = "dMroRd_LGdY"
+const locoUrl = "https://loco.gg/streamers/RakaZone_Gaming?type=live"
 
-const videoId = "PJWemSzExXs"
-const dir = "/home/isolated/rakazone/rakazone-dataupdater/log"
-YtdlDownloader(videoId, 1, dir).then((res: any) => {
-    YtdlDownloader(videoId, 0, dir).then((res: any) => {
+// getYoutubeLiveData(channelId, apiKey).then((data: any) => {
+//     console.log("getYoutubeLiveData")
+//     console.log(data)
+
+// }).catch((err: any) => {
+//     console.log(err)
+// })
+
+// getChannelStatistics(channelId, apiKey).then((data: any) => {
+//     console.log("getChannelStatistics")
+//     console.log(data)
+// }).catch((err: any) => {
+//     console.log(err)
+// })
+
+// getVideoStatistics(videoId, apiKey).then((data: any) => {
+//     console.log("getVideoStatistics")
+//     console.log(data)
+// }).catch((err: any) => {
+//     console.log(err)
+// })
+
+// getYoutubeChannelVideosList(channelId, apiKey).then((data: any) => {
+//     console.log("getYoutubeChannelVideosList")
+//     console.log(data)
+// }).catch((err: any) => {
+//     console.log(err)
+// })
+getLocoLiveData(locoUrl)
+    .then((res: any) => {
         console.log(res)
-        mergeAudioAndVideo(videoId, dir)
-            .then((res: any) => {
-                console.log(res)
-                generatePreviewImages(videoId, dir)
-                    .then((res: any) => {
-                        console.log(res)
-                        // convertToHLS(videoId, dir)
-                        //     .then((res: any) => {
-                        //         console.log(res)
-                        //     })
-                        //     .catch((err: any) => {
-                        //         console.log(err)
-                        //     })
-                    })
-                    .catch((err: any) => {
-                        console.log(err)
-                    })
-            })
-            .catch((err: any) => {
-                console.log(err.error)
-            })
     })
-})
+    .catch((err: any) => {
+        console.log(err)
+    })
+
+getLocoData(locoUrl)
+    .then((res: any) => {
+        console.log(res)
+    })
+    .catch((err: any) => {
+        console.log(err)
+    })
