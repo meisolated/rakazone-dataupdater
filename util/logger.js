@@ -34,7 +34,7 @@ LoggerUtil.verbose = (message) => {
 }
 
 LoggerUtil.info = (message) => {
-    if (process.env.ENV === "developmenr") {
+    if (process.env.ENV === "development") {
         logger.log("info", message)
     }
 }

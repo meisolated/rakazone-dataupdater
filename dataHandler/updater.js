@@ -24,6 +24,7 @@ export let updateLiveData = () =>
         let youtubeApiKey = await YoutubeAPI.findOne({ where: { utilization: { [Op.lt]: 9000 } } })
         let settings = await Settings.findOne({ where: { id: 1 } })
         let streamerData = await StreamerData.findAll()
+        console.log(currentliveData)
         streamerData.forEach(element => {
             _data[element.name] = element.data
         })
@@ -41,9 +42,13 @@ export let updateLiveData = () =>
             } else if (currentliveData.platform === "loco") {
                 let currentViewers = await CheckLoco(_data.loco_username)
                 let updateLiveStatus = currentViewers.status === "offline" ? { status: "offline" } : { viewers_count: currentViewers.viewers_count }
+                console.log(updateLiveStatus)
+                console.log(currentViewers)
                 await Live.update(updateLiveStatus, { where: { id: 1 } })
                 return resolve({ success: true })
             }
+
+
         } else if (currentliveData.last_update + settings.check_in < currentTime && currentliveData.status === "offline") {
             LoggerUtil.info("Currently Offline - Checking if live")
             let youtubeLiveStatus = await CheckYoutube(youtubeApiKey.key, _data.yt_channel_id)

@@ -6,6 +6,7 @@ import { axios_simple_get } from "../functions/axios.js"
 import { throwError } from "../functions/funtions.js"
 import { default_thumbnail, youtube_channel_video_thumbnail_maxresdefault, youtube_watch_video } from "../functions/urlTemplates.js"
 import { YoutubeAPI } from "../models/YoutubeAPI.model.js"
+import LoggerUtil from "../util/logger.js"
 //? YOUTUBE
 /**
  *
@@ -140,16 +141,16 @@ export const getLocoData = (loco_channel_url) =>
  */
 export const getLocoLiveData = (loco_channel_url) =>
     new Promise(async (resolve) => {
+        // resolve({ status: "offline" })
         requestPromise(loco_channel_url)
             .then(async (html) => {
                 let $ = load(html)
                 let data = $("div > div.css-8238fg").text()
-
+                LoggerUtil.info(loco_channel_url)
+                LoggerUtil.info(data)
                 if (!data.includes("isn’t live ")) {
                     let title = $("div.css-d41wqj > div.css-e977ud > div.css-18582wk.e1cv5vcz0").text()
-
                     let viewers_count = $("div > div.css-pl8wq5").text()
-
                     let data = {
                         title: title,
                         platform: "loco",

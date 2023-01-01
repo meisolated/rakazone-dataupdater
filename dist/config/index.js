@@ -1,0 +1,9 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.default = {
+    mongoUri: process.env.BUILD_TYPE == "production" ? "mongodb://10.69.69.201:27017/rakazone" : "mongodb://10.69.69.201:27017/rakazoneDev",
+    HLSDir: "/home/isolated/rakazone/downloads/output/HLS",
+    thumbnailsDir: "/home/isolated/rakazone/downloads/thumbnails",
+    assetsDir: "/home/isolated/rakazone/downloads/assets",
+    PORT: process.env.BUILD_TYPE == "production" ? 3005 : 5005,
+};
