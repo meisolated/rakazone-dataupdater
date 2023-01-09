@@ -141,33 +141,34 @@ export const getLocoData = (loco_channel_url) =>
  */
 export const getLocoLiveData = (loco_channel_url) =>
     new Promise(async (resolve) => {
-        // resolve({ status: "offline" })
-        requestPromise(loco_channel_url)
-            .then(async (html) => {
-                let $ = load(html)
-                let data = $("div > div.css-8238fg").text()
-                LoggerUtil.info(loco_channel_url)
-                LoggerUtil.info(data)
-                if (!data.includes("isn’t live ")) {
-                    let title = $("div.css-d41wqj > div.css-e977ud > div.css-18582wk.e1cv5vcz0").text()
-                    let viewers_count = $("div > div.css-pl8wq5").text()
-                    let data = {
-                        title: title,
-                        platform: "loco",
-                        videoId: "RakaZone_Gaming",
-                        publishedAt: Math.floor(Date.now() / 1000),
-                        link: loco_channel_url,
-                        thumbnail: default_thumbnail(),
-                        viewers_count: viewers_count.split(" ")[0] || 0,
-                        status: "live",
-                        last_update: Date.now(),
-                    }
-                    return resolve(data)
-                } else {
-                    return resolve({ status: "offline" })
-                }
-            })
-            .catch((err) => resolve({ status: "offline" }))
+        resolve({ status: "offline" })
+        // requestPromise(loco_channel_url)
+        //     .then(async (html) => {
+        //         let $ = load(html)
+        //         let data = $("div > div.css-8238fg").text()
+        //         LoggerUtil.info(loco_channel_url)
+        //         LoggerUtil.info(data)
+        //         if (!data.includes("isn’t live ")) {
+        //             let title = $("div.css-d41wqj > div.css-e977ud > div.css-18582wk.e1cv5vcz0").text()
+
+        //             let viewers_count = $("div > div.css-pl8wq5").text()
+        //             let data = {
+        //                 title: title,
+        //                 platform: "loco",
+        //                 videoId: "RakaZone_Gaming",
+        //                 publishedAt: Math.floor(Date.now() / 1000),
+        //                 link: loco_channel_url,
+        //                 thumbnail: default_thumbnail(),
+        //                 viewers_count: viewers_count.split(" ")[0] || 0,
+        //                 status: "live",
+        //                 last_update: Date.now(),
+        //             }
+        //             return resolve(data)
+        //         } else {
+        //             return resolve({ status: "offline" })
+        //         }
+        //     })
+        //     .catch((err) => resolve({ status: "offline" }))
     })
 
 //? TWITTER
