@@ -124,7 +124,7 @@ export const getLocoData = (locoChannelUrl: any) =>
 
                 return resolve([{ loco_views_count }, { loco_followers_count }])
             })
-            .catch((err) => reject(err))
+            .catch((err: any) => reject(err))
     })
 
 /**
@@ -157,5 +157,5 @@ export const getLocoLiveData = (locoChannelUrl: any) =>
                     return resolve({ status: "offline" })
                 }
             })
-            .catch((err) => resolve({ status: "offline" }))
+            .catch((err: any) => resolve({ status: "offline" }))
     })
